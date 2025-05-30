@@ -1,222 +1,1013 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kyrosil Live</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #1a1a1a;
-      color: #e0e0e0;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    #header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    #logo {
-      width: 50px;
-      height: 50px;
-      background: url('https://via.placeholder.com/50?text=Logo') no-repeat center;
-      background-size: cover;
-      border-radius: 50%;
-    }
-    #title {
-      font-size: 2em;
-      font-weight: bold;
-      color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    }
-    #username-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    input,
-    button {
-      width: 90%;
-      max-width: 300px;
-      padding: 12px;
-      font-size: 1em;
-      border-radius: 5px;
-      border: 1px solid #444;
-      background-color: #2a2a2a;
-      color: #fff;
-    }
-    button {
-      background-color: #ffd700;
-      color: #1a1a1a;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background-color: #e6c200;
-    }
-    #chat-container {
-      display: none;
-      width: 100%;
-      max-width: 600px;
-      background-color: #2a2a2a;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-      padding: 20px;
-    }
-    #online-count {
-      font-weight: bold;
-      color: #ffd700;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    #chat-box {
-      height: 400px;
-      overflow-y: auto;
-      border: 1px solid #444;
-      border-radius: 5px;
-      padding: 10px;
-      background-color: #1e1e1e;
-      margin-bottom: 10px;
-    }
-    .message {
-      margin: 8px 0;
-      padding: 8px;
-      border-radius: 5px;
-      background-color: #333;
-    }
-    .username {
-      font-weight: bold;
-      color: #1e90ff;
-    }
-    .kyrosil {
-      color: #ffd700;
-      text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-    }
-    .kyrosil::before {
-      content: "\1F451 ";
-    }
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #2a2a2a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #ffd700;
-      border-radius: 4px;
-    }
-    @media (max-width: 600px) {
-      #title {
-        font-size: 1.5em;
-      }
-      input,
-      button {
-        width: 100%;
-      }
-      #chat-box {
-        height: 300px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyrosil Live</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        #logo {
+            width: 50px;
+            height: 50px;
+            background: url('https://via.placeholder.com/50?text=Logo') no-repeat center;
+            background-size: cover;
+            border-radius: 50%;
+        }
+        #title {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        #username-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #username-input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            width: 200px;
+        }
+        #username-submit {
+            padding: 10px 20px;
+            font-size: 1em;
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #username-submit:hover {
+            background: #e6c200;
+        }
+        #chat-container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+        }
+        #online-count {
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        #chat-box {
+            height: 60vh;
+            overflow-y: scroll;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            background: #1e1e1e;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        .message {
+            margin: 8px 0;
+            padding: 8px;
+            border-radius: 5px;
+            background: #333;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .username {
+            font-weight: bold;
+            color: #1e90ff;
+        }
+        .kyrosil {
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        .kyrosil::before {
+            content: "👑";
+            margin-right: 5px;
+        }
+        .mod-buttons {
+            display: none;
+            gap: 5px;
+        }
+        .mod-buttons button {
+            padding: 4px 8px;
+            font-size: 0.8em;
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .mod-buttons button:hover {
+            background: #cc3333;
+        }
+        #message-input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            font-size: 0.9em;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+        }
+        #message-submit {
+            padding: 8px;
+            font-size: 0.9em;
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #message-submit:hover {
+            background: #e6c200;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 4px;
+        }
+
+        /* Mobil optimizasyon */
+        @media (max-width: 480px) {
+            #chat-container {
+                max-width: 100%;
+                padding: 10px;
+            }
+            #chat-box {
+                height: 50vh;
+                font-size: 0.8em;
+            }
+            #message-input {
+                width: calc(100% - 15px);
+                padding: 6px;
+            }
+            #message-submit {
+                padding: 6px;
+            }
+            #title {
+                font-size: 1.5em;
+            }
+            .message {
+                font-size: 0.8em;
+                padding: 6px;
+            }
+            .mod-buttons button {
+                padding: 3px 6px;
+                font-size: 0.7em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="header">
-    <div id="logo"></div>
-    <h1 id="title">Kyrosil Live</h1>
-  </div>
-  <div id="username-container">
-    <input type="text" id="username-input" placeholder="Choose a username" maxlength="20">
-    <button id="username-submit">Join Chat</button>
-  </div>
-  <div id="chat-container">
-    <div id="online-count">Online: 0</div>
-    <div id="chat-box"></div>
-    <input type="text" id="message-input" placeholder="Type a message..." maxlength="100">
-    <button id="message-submit">Send</button>
-  </div>
-  <script src="https://github.com/kyrosil/kyrosil-nelazimsa-kapida/blob/main/fake_chat_data.js"></script>
-  <script>
-    let currentUser = null;
-    let onlineCount = 5000;
+    <div id="header">
+        <div id="logo"></div>
+        <h1 id="title">Kyrosil Live</h1>
+    </div>
+    <div id="username-container">
+        <input type="text" id="username-input" placeholder="Choose a username" maxlength="20">
+        <button id="username-submit">Join Chat</button>
+    </div>
+    <div id="chat-container">
+        <div id="online-count">Online: 0</div>
+        <div id="chat-box"></div>
+        <input type="text" id="message-input" placeholder="Type a message..." maxlength="100">
+        <button id="message-submit">Send</button>
+    </div>
 
-    function updateOnlineCount() {
-      onlineCount += Math.floor(Math.random() * 1000) - 500;
-      onlineCount = Math.max(5000, Math.min(50000, onlineCount));
-      document.getElementById('online-count').textContent = `Online: ${onlineCount}`;
-    }
+    <script>
+        // JSON dosyasından alınan veri (önceki 400 mesaj + her dilden 50 yeni samimi mesaj)
+        const fakeChatData = {
+            "nicknames": ["Kyrosil", "Zeytingod", "Angelosrider", "Neo69", "ZeytinFR", "OmbreFR", "Ghost01", "ErenDream", "Φωςshadow", "AngelosLord", "Cielghost", "CielDream", "Stormmaster", "ΔίαςSoul", "StormAy", "Myst🌙", "GhostLord", "Φως🌙", "OmbreLord", "Flamme01", "Elrider", "Flamme💀", "LuneBoy", "BleuKız", "PapaBlade", "Flammeghost", "Δίας🔥", "Erenqueen", "Skiatraveler", "Etoile01", "AyWalker", "Skygod", "Papa⭐", "Rüzgarqueen", "LuneDream", "Cielninja", "Skiaghost", "BlueFleur", "Angelos⭐", "MaviEU", "BleuFR", "Thalassa🔥", "BleuTR", "RougeSoul", "Ghost💀", "LuneWalker", "BleuXx", "Stormqueen", "Skia🌙", "KleosXx", "KleosEU", "Δίαςgod", "ElFleur", "Luneshadow", "ΦωςBoy", "NightDream", "Darkgod", "Elghost", "Thalassatraveler", "ZeytinSoul", "Sky🌙", "Fire01", "LuneXx", "Stormghost", "CielAy", "Bleuninja", "Rouge💀", "ThalassaBlade", "MaviDream", "Eren01", "Δίας⭐", "FireWalker", "OmbreKız", "Papa🌀", "ElEU", "Eren69", "StormBlade", "AyKız", "Night01", "Lunegod", "GhostTR", "Rougegod", "DarkTR", "ThalassaTR", "Blue🔥", "StormSoul", "Rouge🌙", "Rüzgarpapillon", "AyAy", "Δίαςghost", "ErenKız", "Rüzgartraveler", "ZeytinXx", "Rouge🌀", "Etoile🌀", "ΦωςEU", "PapaKız", "Thalassaninja", "Rüzgar🔥", "Lune69", "Stormgod", "Kleosrider", "Erenrider", "DarkLord", "DarkFR", "FireTR", "BleuBoy", "ElBoy", "Ay💀", "Rougemaster", "Mavi❗", "Ayrider", "Firepapillon", "Bleu⭐", "Skiamaster", "GhostBlade", "StormFleur", "Ghost❗", "MaviLord", "ThalassaWalker", "AngelosTR", "Neoghost", "RüzgarFR", "Ciel❗", "Skia❗", "AngelosAy", "Eltraveler", "KleosTR", "Nightqueen", "Skia69", "Papashadow", "Erenghost", "Thalassaghost", "Φως🔥", "Thalassamaster", "Sky01", "KleosFleur", "GhostFR", "EtoileEU", "BlueDream", "Φως🌀", "SkiaAy", "Luneninja", "Cielrider", "EtoileDream", "Ciel💀", "Blueshadow", "Rüzgarninja", "AngelosBlade", "Erenninja", "ErenBlade", "FlammeDream", "Ombre💀", "SkiaEU", "NightFleur", "Kleos💀", "Neo💀", "Mavi⭐", "SkiaBoy", "SkiaTR", "AyXx", "ThalassaAy", "Angelos01", "RüzgarEU", "Angelosmaster", "Rüzgarrider", "RüzgarFleur", "Kleosghost", "AyBoy", "NightXx", "Night⭐", "CielEU", "BlueXx", "Φωςqueen", "MaviWalker", "Darkpapillon", "NeoLord", "ZeytinBlade", "RougeLord", "Lunetraveler", "ΦωςKız", "NeoWalker", "SkyAy", "Bleupapillon", "DarkDream", "Papa🔥", "NeoFR", "Storm🌀", "ErenSoul", "Nighttraveler", "Myst01", "Δίας01", "Skyrider", "GhostKız", "Flammerider", "SkyFleur", "Rougeshadow", "Mystmaster", "BleuLord", "Flamme🔥", "Storm🔥", "Ghost🔥", "Skianinja", "Papamaster", "AngelosFR", "ErenFleur", "Neotraveler", "Zeytinmaster", "SkiaFR", "Blue🌙", "AngelosBoy", "Blueninja", "Aymaster", "Skiaqueen", "MaviTR", "Mavishadow", "Δίαςshadow", "Zeytin💀", "Mystninja", "ΔίαςBlade", "MaviFleur", "Ombre⭐", "KleosLord", "Ayshadow", "Zeytinghost", "Bleu🌀", "CielFleur", "SkyLord", "Mavigod", "EtoileLord", "SkyXx", "Storm❗", "Fireghost", "Nightmaster", "ΦωςLord", "Lune🌙", "SkiaLord", "Ombre01", "Paparider", "Rouge⭐", "OmbreFleur", "Erenmaster", "Φωςninja", "CielKız", "Ciel🌀", "BlueSoul", "Bleuqueen", "StormXx", "ErenAy", "SkiaBlade", "Ciel01", "DarkSoul", "ΦωςXx", "El❗", "FireFR", "OmbreBlade", "BlueEU", "Rüzgar💀", "Darktraveler", "Sky🌀", "Φως⭐", "SkyFR", "SkyTR", "CielSoul", "Etoileshadow", "MaviXx", "EtoileBlade", "Zeytinninja", "DarkBoy", "Ombreghost", "Φωςmaster", "PapaXx", "FlammeEU", "BleuFleur", "LuneEU", "Storm🌙", "Storm01", "MystAy", "KleosKız", "Zeytin🔥", "EtoileFR", "MystFleur", "Neo🌀", "Neo01", "Bleu🌙", "Flammeshadow", "Thalassa01", "Ombreshadow", "KleosBlade", "ElTR", "RüzgarDream", "Dark🌙", "Night❗", "Rougeninja", "Papa🌙", "Etoileghost", "RüzgarWalker", "NightFR", "FireEU", "Nightrider", "FireFleur", "Lune❗", "SkiaXx", "Elshadow", "MaviKız", "Thalassa⭐", "Lune⭐", "Neoninja", "Blue❗", "Mystrider", "Ciel69", "Etoile💀", "Eren💀", "Ghost69", "ThalassaEU", "LuneKız", "LuneLord", "Zeytinpapillon", "Night🌙", "Ombreninja", "FlammeFleur", "Erenshadow", "Kleos🌙", "FlammeFR", "ΦωςFR", "PapaSoul", "Mavi🔥", "Ciel🔥", "PapaFleur", "Erenpapillon", "Kleosninja", "Firetraveler", "Δίαςtraveler", "OmbreSoul", "Rouge❗", "ErenXx", "Bluegod", "Mavi01", "Thalassagod", "Ghost⭐", "ElLord", "ElBlade", "Ombremaster", "NightBlade", "AngelosKız", "Kleos01", "NightAy", "Night🌀", "Sky🔥", "FlammeBoy", "Mavi🌙", "Rougeghost", "ΔίαςLord", "RüzgarTR", "Aygod", "Kleos69", "ΔίαςKız", "Fire🌙", "Ayghost", "NightSoul", "Mystghost", "StormBoy", "Cielmaster", "ZeytinKız", "Stormpapillon", "ElFR", "Thalassaqueen", "ΔίαςFR", "Angelos🌀", "LuneFR", "Mavininja", "CielFR", "Rüzgarghost", "EtoileWalker", "PapaDream", "Thalassa🌙", "Ay🌀", "RougeFleur", "Skia💀", "Sky⭐", "Ciel🌙", "SkyBoy", "Papa69", "Bluemaster", "Bluetraveler", "Rouge🔥", "MystBlade", "Flamme🌀", "Neo🔥", "Neo❗", "Myst🌀", "Fireshadow", "Ombrerider", "Aypapillon", "Bleutraveler", "Kleos❗", "Mystqueen", "StormDream", "Ghostgod", "FireBlade", "Night🔥", "ΔίαςAy", "Zeytinshadow", "MaviBoy", "Dark🔥", "Blueghost", "Kleosqueen", "Angelostraveler", "GhostAy", "Firequeen", "Ghost🌀", "FireBoy", "MystDream", "ZeytinTR", "LuneBlade", "Ombrequeen", "BleuBlade", "SkyEU", "MystEU", "Fire💀", "OmbreAy", "ZeytinDream", "SkyKız", "Flammegod", "Neopapillon", "SkySoul", "AySoul", "Lune🔥", "Papagod", "Angelos💀", "FlammeSoul", "OmbreBoy", "Elqueen", "Stormninja", "Elpapillon", "Etoile❗", "RougeXx", "ElSoul", "Neo⭐", "ΔίαςTR", "MystBoy", "Darkghost", "FlammeTR", "Zeytin69", "Kleospapillon", "LuneTR", "BleuEU", "EtoileFleur", "NeoDream", "PapaFR", "Bleu01", "ZeytinLord", "ErenEU", "Rougepapillon", "Darkrider", "Angelosghost", "SkyWalker", "Bleugod", "Kleos🌀", "RougeWalker", "El⭐", "Fire⭐", "Neomaster", "FireKız", "Dark🌀", "Flammeninja", "Δίας69", "Thalassa💀", "FireDream", "FireLord", "RüzgarSoul", "Δίας🌙", "OmbreWalker", "Ay01", "ErenLord", "Thalassashadow", "Angelosninja", "ΔίαςEU", "ThalassaSoul", "FlammeWalker", "ZeytinWalker", "Neoqueen", "Bluerider", "Papa💀", "Skytraveler", "Ay⭐", "Ombretraveler", "AyDream", "Ay🔥", "MaviSoul", "Zeytin🌙", "Rougerider", "Ombre❗", "Etoile🌙", "Darkninja", "Ombre🔥", "Night69", "Kleosgod", "Mystpapillon", "Firegod", "FlammeKız"],
+            "messages": [
+                // Önceki 400 mesaj (Türkçe, İngilizce, Fransızca, Yunanca)
+                "Merhaba arkadaşlar, nasılsınız?",
+                "Bugün hava çok güzel değil mi?",
+                "Kahve içmeye ne dersiniz?",
+                "Dün gece film izledim, süperdi!",
+                "Bu sohbet çok eğlenceli!",
+                "Kimler online, selam verin!",
+                "Yarın iş var, uykum kaçtı!",
+                "Müzik açsanız keşke!",
+                "Kahkahalar havada uçuşuyor!",
+                "Bu grup çok hareketli!",
+                "Nasılsın, neler yapıyorsun?",
+                "Telefonum şarjı bitiyor!",
+                "Hadi bir oyun oynayalım!",
+                "Gece çok uzun geliyor!",
+                "Sabah erken kalkacağım!",
+                "Köyde tatil planlıyorum!",
+                "Bu mesajlar çok komik!",
+                "Arkadaşlar yardım edin!",
+                "Yemek yedim, çok lezzetliydi!",
+                "Hava soğuk, kalın giyinin!",
+                "Dizi önerisi lazım!",
+                "Bugün çok yoruldum!",
+                "Kahve molası verdim!",
+                "Bu sohbeti seviyorum!",
+                "Kimse yok mu burada?",
+                "Hadi dans edelim!",
+                "Güneş açtı, dışarı çıkalım!",
+                "Telefonum çıldırdı!",
+                "Bu grup efsane!",
+                "Herkese iyi geceler!",
+                "Yarın tatil olsa keşke!",
+                "Kahvaltı yaptım, harikaydı!",
+                "Hava raporuna bakalım!",
+                "Arkadaşlar buluşalım!",
+                "Bu mesajlar bitmez!",
+                "Kahkaha attım yine!",
+                "Gece yürüyüşü yapalım!",
+                "Telefonumu şarja taktım!",
+                "Bu sohbet çok keyifli!",
+                "Hadi bir şarkı söyle!",
+                "Bugün işler yoğun!",
+                "Kahve içmeden duramam!",
+                "Arkadaşlar naber?",
+                "Bu grup çok neşeli!",
+                "Hava karardı, eve gidelim!",
+                "Dizi izlemeye devam!",
+                "Kahvaltıda ne yediniz?",
+                "Hadi bir plan yapalım!",
+                "Bu mesajlar çok güzel!",
+                "Gece çok sessiz!",
+                "Telefonum ısındı!",
+                "Hava çok rüzgarlı!",
+                "Kahve kokusu harika!",
+                "Arkadaşlar görüşelim!",
+                "Bu sohbet bitmesin!",
+                "Hadi bir oyun oynayalım!",
+                "Güneş batıyor, manzara süper!",
+                "Telefonum dolu!",
+                "Bu grup çok eğlenceli!",
+                "Herkese selam!",
+                "Yarın hava nasıl olacak?",
+                "Kahve içip dinlenelim!",
+                "Arkadaşlar nerede?",
+                "Bu mesajlar çok komik!",
+                "Gece uzun, uykum yok!",
+                "Hava çok güzel!",
+                "Kahvaltıya ne dersiniz?",
+                "Telefonum şarjı bitiyor!",
+                "Bu sohbet çok güzel!",
+                "Hadi dışarı çıkalım!",
+                "Güneş açtı, keyifli!",
+                "Arkadaşlar ne yapıyorsunuz?",
+                "Bu grup çok hareketli!",
+                "Hava soğuk, dikkat!",
+                "Kahve molası zamanı!",
+                "Telefonum çaldı!",
+                "Bu mesajlar efsane!",
+                "Gece yürüyüşü yapalım!",
+                "Herkese iyi günler!",
+                "Yarın tatil olsa!",
+                "Kahvaltı hazır, gelin!",
+                "Hava raporuna bak!",
+                "Arkadaşlar buluşalım!",
+                "Bu sohbet çok neşeli!",
+                "Hadi bir şarkı aç!",
+                "Bugün çok yorgunum!",
+                "Kahve içmeden duramam!",
+                "Arkadaşlar naber?",
+                "Bu grup çok keyifli!",
+                "Hava karardı, eve!",
+                "Dizi izleme zamanı!",
+                "Kahvaltıda ne yedin?",
+                "Hadi bir plan yap!",
+                "Bu mesajlar süper!",
+                "Gece çok sessiz!",
+                "Telefonum ısındı!",
+                "Hava çok rüzgarlı!",
+                "Kahve kokusu muhteşem!",
+                "Hello everyone, how are you?",
+                "The weather is nice today!",
+                "Let’s grab a coffee!",
+                "Watched a movie last night, awesome!",
+                "This chat is so fun!",
+                "Who’s online, say hi!",
+                "Work tomorrow, can’t sleep!",
+                "Play some music please!",
+                "Laughter everywhere!",
+                "This group is lively!",
+                "How are you doing?",
+                "My phone is dying!",
+                "Let’s play a game!",
+                "Night feels so long!",
+                "I’ll wake up early!",
+                "Planning a village trip!",
+                "These messages are hilarious!",
+                "Guys, help me out!",
+                "Had a delicious meal!",
+                "It’s cold, wear warm clothes!",
+                "Need a series recommendation!",
+                "I’m so tired today!",
+                "Took a coffee break!",
+                "I love this chat!",
+                "Is anyone here?",
+                "Let’s dance!",
+                "Sun is out, let’s go!",
+                "My phone is crazy!",
+                "This group is epic!",
+                "Good night everyone!",
+                "Wish tomorrow was a holiday!",
+                "Had a great breakfast!",
+                "Check the weather forecast!",
+                "Let’s meet up, friends!",
+                "These messages never end!",
+                "Laughed again!",
+                "Let’s take a night walk!",
+                "Plugged my phone to charge!",
+                "This chat is enjoyable!",
+                "Sing a song, come on!",
+                "Work is busy today!",
+                "Can’t live without coffee!",
+                "Hey friends, what’s up?",
+                "This group is cheerful!",
+                "It’s dark, let’s go home!",
+                "Keep watching series!",
+                "What did you have for breakfast?",
+                "Let’s make a plan!",
+                "These messages are great!",
+                "Night is so quiet!",
+                "My phone is heating up!",
+                "Windy weather today!",
+                "Coffee smell is amazing!",
+                "Let’s catch up, friends!",
+                "This chat shouldn’t end!",
+                "Let’s play a game!",
+                "Sunset is beautiful!",
+                "My phone is full!",
+                "This group is entertaining!",
+                "Hi everyone!",
+                "How will the weather be tomorrow?",
+                "Let’s relax with coffee!",
+                "Where are you, friends?",
+                "These messages are funny!",
+                "Long night, no sleep!",
+                "Nice weather today!",
+                "How about breakfast?",
+                "My phone is running out!",
+                "This chat is lovely!",
+                "Let’s go outside!",
+                "Sun is shining, nice!",
+                "What are you doing, friends?",
+                "This group is active!",
+                "Cold weather, be careful!",
+                "Coffee break time!",
+                "My phone rang!",
+                "These messages are awesome!",
+                "Let’s take a night walk!",
+                "Have a good day everyone!",
+                "Wish for a holiday tomorrow!",
+                "Breakfast is ready, come!",
+                "Check the weather!",
+                "Let’s meet up!",
+                "This chat is joyful!",
+                "Play a song, please!",
+                "I’m exhausted today!",
+                "Need my coffee fix!",
+                "Hey friends, how’s it going?",
+                "This group is fun!",
+                "It’s dark, heading home!",
+                "Series time!",
+                "What did you eat for breakfast?",
+                "Let’s plan something!",
+                "These messages are superb!",
+                "Quiet night!",
+                "My phone is hot!",
+                "Windy day!",
+                "Amazing coffee aroma!",
+                "Bonjour à tous, comment allez-vous?",
+                "Le temps est beau aujourd'hui!",
+                "Prenons un café ensemble!",
+                "J'ai regardé un film hier, super!",
+                "Ce chat est amusant!",
+                "Qui est en ligne, dites bonjour!",
+                "Travail demain, je ne dors pas!",
+                "Mettez de la musique s'il vous plaît!",
+                "Des rires partout!",
+                "Ce groupe est vivant!",
+                "Comment vas-tu?",
+                "Mon téléphone est déchargé!",
+                "Jouons à un jeu!",
+                "La nuit semble longue!",
+                "Je me lèverai tôt!",
+                "Je planifie un voyage au village!",
+                "Ces messages sont hilarants!",
+                "Aidez-moi, les amis!",
+                "J'ai mangé un repas délicieux!",
+                "Il fait froid, mettez des vêtements chauds!",
+                "J'ai besoin d'une recommandation de série!",
+                "Je suis fatigué aujourd'hui!",
+                "J'ai pris une pause café!",
+                "J'adore ce chat!",
+                "Y a-t-il quelqu'un ici?",
+                "Dansons ensemble!",
+                "Le soleil est sorti, sortons!",
+                "Mon téléphone est fou!",
+                "Ce groupe est épique!",
+                "Bonne nuit à tous!",
+                "J'aimerais que demain soit un jour férié!",
+                "J'ai pris un super petit-déjeuner!",
+                "Vérifions la météo!",
+                "Rencontrons-nous, amis!",
+                "Ces messages ne s'arrêtent jamais!",
+                "J'ai ri encore!",
+                "Faisons une promenade nocturne!",
+                "J'ai branché mon téléphone!",
+                "Ce chat est agréable!",
+                "Chantez une chanson, allez!",
+                "Le travail est chargé aujourd'hui!",
+                "Je ne peux pas vivre sans café!",
+                "Salut amis, quoi de neuf?",
+                "Ce groupe est joyeux!",
+                "Il fait noir, rentrons!",
+                "Continuons à regarder des séries!",
+                "Qu'avez-vous mangé au petit-déjeuner?",
+                "Faisons un plan!",
+                "Ces messages sont géniaux!",
+                "La nuit est si calme!",
+                "Mon téléphone chauffe!",
+                "Il fait venteux aujourd'hui!",
+                "L'odeur du café est incroyable!",
+                "Rattrapons-nous, amis!",
+                "Ce chat ne devrait pas finir!",
+                "Jouons à un jeu!",
+                "Le coucher de soleil est beau!",
+                "Mon téléphone est plein!",
+                "Ce groupe est divertissant!",
+                "Salut à tous!",
+                "Comment sera la météo demain?",
+                "Détendons-nous avec du café!",
+                "Où êtes-vous, amis?",
+                "Ces messages sont drôles!",
+                "Longue nuit, pas de sommeil!",
+                "Beau temps aujourd'hui!",
+                "Et si on prenait le petit-déjeuner?",
+                "Mon téléphone se décharge!",
+                "Ce chat est charmant!",
+                "Sortons dehors!",
+                "Le soleil brille, agréable!",
+                "Que faites-vous, amis?",
+                "Ce groupe est actif!",
+                "Météo froide, attention!",
+                "Pause café, c'est l'heure!",
+                "Mon téléphone a sonné!",
+                "Ces messages sont super!",
+                "Faisons une promenade nocturne!",
+                "Bonne journée à tous!",
+                "J'aimerais un jour férié demain!",
+                "Le petit-déjeuner est prêt, venez!",
+                "Vérifiez la météo!",
+                "Rencontrons-nous!",
+                "Ce chat est joyeux!",
+                "Mettez une chanson, s'il vous plaît!",
+                "Je suis épuisé aujourd'hui!",
+                "J'ai besoin de mon café!",
+                "Salut amis, comment allez-vous?",
+                "Ce groupe est amusant!",
+                "Il fait noir, rentrons!",
+                "Heure des séries!",
+                "Qu'as-tu mangé au petit-déjeuner?",
+                "Faisons un plan!",
+                "Ces messages sont superbes!",
+                "Nuit calme!",
+                "Mon téléphone est chaud!",
+                "Jour venteux!",
+                "Arome de café incroyable!",
+                "Γειά σας όλοι, πώς είστε;",
+                "Ο καιρός είναι ωραίος σήμερα!",
+                "Ας πιούμε έναν καφέ μαζί!",
+                "Είδα μια ταινία χθες, υπέροχη!",
+                "Αυτό το chat είναι διασκεδαστικό!",
+                "Ποιος είναι online, πείτε γειά!",
+                "Δουλειά αύριο, δεν κοιμάμαι!",
+                "Βάλτε μουσική παρακαλώ!",
+                "Γέλια παντού!",
+                "Αυτή η ομάδα είναι ζωντανή!",
+                "Πώς είσαι;",
+                "Το τηλέφωνό μου τελείωσε!",
+                "Ας παίξουμε ένα παιχνίδι!",
+                "Η νύχτα φαίνεται μακρά!",
+                "Θα ξυπνήσω νωρίς!",
+                "Σχεδιάζω ένα ταξίδι στο χωριό!",
+                "Αυτά τα μηνύματα είναι αστεία!",
+                "Βοηθήστε με, φίλοι!",
+                "Έφαγα ένα νόστιμο γεύμα!",
+                "Κάνει κρύο, φορέστε ζεστά!",
+                "Χρειάζομαι πρόταση για σειρά!",
+                "Είμαι κουρασμένος σήμερα!",
+                "Έκανα διάλειμμα για καφέ!",
+                "Αγαπώ αυτό το chat!",
+                "Υπάρχει κανείς εδώ;",
+                "Ας χορέψουμε!",
+                "Ο ήλιος βγήκε, ας βγούμε!",
+                "Το τηλέφωνό μου τρελάθηκε!",
+                "Αυτή η ομάδα είναι επική!",
+                "Καλή νύχτα σε όλους!",
+                "Μακάρι αύριο να ήταν αργία!",
+                "Έφαγα υπέροχο πρωινό!",
+                "Ας δούμε την πρόγνωση καιρού!",
+                "Ας συναντηθούμε, φίλοι!",
+                "Αυτά τα μηνύματα δεν τελειώνουν!",
+                "Γέλασα πάλι!",
+                "Ας κάνουμε νυχτερινό περίπατο!",
+                "Έβαλα το τηλέφωνό μου να φορτίσει!",
+                "Αυτό το chat είναι ευχάριστο!",
+                "Τραγουδήστε ένα τραγούδι, έλα!",
+                "Η δουλειά είναι φορτωμένη σήμερα!",
+                "Δεν μπορώ χωρίς καφέ!",
+                "Γειά φίλοι, τι νέα;",
+                "Αυτή η ομάδα είναι χαρούμενη!",
+                "Σκοτείνιασε, ας πάμε σπίτι!",
+                "Συνεχίζω να βλέπω σειρές!",
+                "Τι φάγατε για πρωινό;",
+                "Ας κάνουμε ένα σχέδιο!",
+                "Αυτά τα μηνύματα είναι υπέροχα!",
+                "Η νύχτα είναι ήσυχη!",
+                "Το τηλέφωνό μου ζεστάθηκε!",
+                "Αέρας σήμερα!",
+                "Η μυρωδιά του καφέ είναι υπέροχη!",
+                "Ας τα πούμε, φίλοι!",
+                "Αυτό το chat δεν πρέπει να τελειώσει!",
+                "Ας παίξουμε ένα παιχνίδι!",
+                "Το ηλιοβασίλεμα είναι όμορφο!",
+                "Το τηλέφωνό μου είναι γεμάτο!",
+                "Αυτή η ομάδα είναι διασκεδαστική!",
+                "Γειά σε όλους!",
+                "Πώς θα είναι ο καιρός αύριο;",
+                "Ας χαλαρώσουμε με καφέ!",
+                "Πού είστε, φίλοι;",
+                "Αυτά τα μηνύματα είναι αστεία!",
+                "Μεγάλη νύχτα, δεν κοιμάμαι!",
+                "Ωραίος καιρός σήμερα!",
+                "Τι λέτε για πρωινό;",
+                "Το τηλέφωνό μου τελειώνει!",
+                "Αυτό το chat είναι υπέροχο!",
+                "Ας βγούμε έξω!",
+                "Ο ήλιος λάμπει, ωραία!",
+                "Τι κάνετε, φίλοι;",
+                "Αυτή η ομάδα είναι ενεργή!",
+                "Κρύος καιρός, προσοχή!",
+                "Ώρα για διάλειμμα καφέ!",
+                "Το τηλέφωνό μου χτύπησε!",
+                "Αυτά τα μηνύματα είναι τέλεια!",
+                "Ας κάνουμε νυχτερινό περίπατο!",
+                "Καλή μέρα σε όλους!",
+                "Μακάρι να είχαμε αργία αύριο!",
+                "Το πρωινό είναι έτοιμο, ελάτε!",
+                "Ελέγξτε τον καιρό!",
+                "Ας συναντηθούμε!",
+                "Αυτό το chat είναι χαρούμενο!",
+                "Βάλτε ένα τραγούδι, παρακαλώ!",
+                "Είμαι εξαντλημένος σήμερα!",
+                "Χρειάζομαι τον καφέ μου!",
+                "Γειά φίλοι, πώς πάτε;",
+                "Αυτή η ομάδα είναι διασκεδαστική!",
+                "Σκοτείνιασε, πάω σπίτι!",
+                "Ώρα για σειρές!",
+                "Τι έφαγες για πρωινό;",
+                "Ας σχεδιάσουμε κάτι!",
+                "Αυτά τα μηνύματα είναι υπέροχα!",
+                "Ήσυχη νύχτα!",
+                "Το τηλέφωνό μου είναι ζεστό!",
+                "Αέρας σήμερα!",
+                "Υπέροχο άρωμα καφέ!",
 
-    function getRandomNickname() {
-      return fakeChatData.nicknames[Math.floor(Math.random() * fakeChatData.nicknames.length)];
-    }
+                // Yeni 50 Türkçe samimi, günlük, hatalı mesaj
+                "yaa kahvemi döktüm üstüme offf",
+                "telefon şarjım bitti gene yaa 😭",
+                "selam millet nörüyonuz",
+                "bu gün hava çok sıcakk terledim resmen",
+                "kahvaltıda yumurta yaptım ama yandı 🙈",
+                "kyrosil nassın kanka",
+                "arkadaşlar otobüsü kaçırdım napcam şimdi",
+                "yaa şarj aleti nerde bulamıyom",
+                "bu chat çok hızlı akıyo yetişemiyom 😂",
+                "kahve içiyom ama uykum var gene",
+                "selam yanlışlıkla anneme yazdım buraya 😂",
+                "bugün işe geç kaldım patron kızdı",
+                "arkadaşlar dizi önerin nolur",
+                "yemek sipariş verdim ama yanlış geldi 😠",
+                "telefonum gene dondu ya sinir oldum",
+                "kahve makinesi bozuldu sabah sabah",
+                "selam millet hava çok güzel di mi",
+                "yaa şifremi unuttum gene",
+                "bugün çok yorgunum uyumak istiyom",
+                "arkadaşlar nerde bu kyrosil ya",
+                "kahvaltıda simit yedim çok güzeldi",
+                "otobüs çok kalabalık terledim resmen",
+                "telefonum düşdü ekran çatladı 😭",
+                "selam yanlış yazdım pardon 😂",
+                "yaa bu chat çok eğlenceli bayıldım",
+                "kahve içiyom ama şeker koymayı unuttum",
+                "arkadaşlar müzik açsak mı",
+                "bugün hava yağmurlu şemsiyem yok",
+                "telefon şarjım %1 gene bitti",
+                "selam millet nörüyonuz bu saatte",
+                "yaa kahve fincanım kırıldı üzüldüm",
+                "otobüs gene geç kaldı sinir oldum",
+                "arkadaşlar kyrosil nerde ya",
+                "kahvaltıda menemen yaptım ama tuzsuz 😅",
+                "telefonum gene ısındı ya",
+                "selam yanlışlıkla caps lock açık yazdım",
+                "yaa bu chat çok kalabalık bayıldım",
+                "kahve içiyom ama uykum geldi gene",
+                "arkadaşlar film önerin nolur",
+                "bugün çok koşturdum yoruldum",
+                "telefonum şarj olmuyo gene",
+                "selam millet hava çok soğuk di mi",
+                "yaa şarj kablosu kopmuş fark etmedim",
+                "otobüs şoförü çok hızlı sürdü korktum",
+                "arkadaşlar kyrosil burda mı",
+                "kahvaltıda ekmek kalmamış üzüldüm",
+                "telefonum gene dondu sinir oldum",
+                "selam millet nörüyonuz bu saatte",
+                "yaa kahve makinesi çalışmıyo gene",
+                "bugün hava çok güzel dışarı çıkalım",
 
-    function getRandomMessage() {
-      const langs = Object.keys(fakeChatData.messages);
-      const lang = langs[Math.floor(Math.random() * langs.length)];
-      const messages = fakeChatData.messages[lang];
-      return messages[Math.floor(Math.random() * messages.length)];
-    }
+                // Yeni 50 İngilizce samimi, günlük, hatalı mesaj
+                "oops spilled my coffe on my shirt ugh",
+                "my phone died againn 😭",
+                "hey guys wht u up to",
+                "its so hot today im sweatingg",
+                "made eggs for breakfast but burned them 🙈",
+                "kyrosil how u doing mate",
+                "guys i missed the bus what do i do",
+                "ugh whre’s my charger i cant find it",
+                "this chat is too fast i cant keep up 😂",
+                "drinking coffee but still sleepy",
+                "hey i accidentally texted my mom here 😂",
+                "i was late to work today boss got mad",
+                "guys plz suggest a series",
+                "ordered food but they sent the wrong thing 😠",
+                "my phone froze again im so annoyed",
+                "coffee machine broke this morning",
+                "hey guys the weather’s nice right",
+                "ugh i forgot my password again",
+                "im so tired today i wanna sleep",
+                "guys where’s kyrosil at",
+                "had a bagel for breakfast so good",
+                "bus was so crowded i’m sweating",
+                "dropped my phone screen cracked 😭",
+                "hey sorry i typed wrong 😂",
+                "ugh this chat is so fun i love it",
+                "drinking coffee but forgot to add sugar",
+                "guys should we play some music",
+                "it’s raining today i forgot my umbrella",
+                "my phone’s at 1% it died again",
+                "hey guys what u doing this late",
+                "ugh broke my coffee mug i’m sad",
+                "bus was late again i’m annoyed",
+                "guys where’s kyrosil at",
+                "made an omelette but forgot salt 😅",
+                "my phone’s heating up again",
+                "hey i accidentally left caps lock on",
+                "ugh this chat is so crowded i love it",
+                "drinking coffee but i’m sleepy again",
+                "guys suggest a movie plz",
+                "i’m so busy today i’m exhausted",
+                "my phone won’t charge again",
+                "hey guys it’s so cold right",
+                "ugh my charger cable broke i didn’t notice",
+                "bus driver drove so fast i got scared",
+                "guys is kyrosil here",
+                "no bread for breakfast i’m sad",
+                "my phone froze again i’m annoyed",
+                "hey guys what u doing this late",
+                "ugh coffee machine isn’t working again",
+                "the weather’s nice today let’s go out",
 
-    function addFakeMessage() {
-      const chatBox = document.getElementById('chat-box');
-      const user = getRandomNickname();
-      const message = getRandomMessage();
+                // Yeni 50 Fransızca samimi, günlük, hatalı mesaj
+                "oups j’ai renversé mon café sur ma chemise",
+                "mon tel est encore déchargé 😭",
+                "salut les amis vous faite quoi",
+                "il fait trop chaud aujord’hui je transpire",
+                "j’ai fait des œufs mais j’ai brûlé 🙈",
+                "kyrosil ça va mon pote",
+                "les amis j’ai raté le bus je fais quoi",
+                "ou est mon chargeur je trouve pas",
+                "ce chat va trop vite j’arrive pas 😂",
+                "je bois du café mais j’ai sommeil",
+                "salut j’ai envoyé un msg à ma mère ici 😂",
+                "j’étais en retard au boulot le chef a crié",
+                "les amis conseillez une série svp",
+                "j’ai commandé à manger mais c’est pas ça 😠",
+                "mon tel a buggé encore je suis énervé",
+                "ma machine à café est cassée ce matin",
+                "salut les amis il fait beau non",
+                "oups j’ai oublié mon mot de passe",
+                "je suis fatigué aujord’hui j’veux dormir",
+                "les amis où est kyrosil",
+                "j’ai mangé un croissant ce matin trop bon",
+                "le bus était plein je transpire",
+                "j’ai fait tomber mon tel l’écran est fissuré 😭",
+                "salut désolé j’ai mal écrit 😂",
+                "ce chat est trop fun j’adore",
+                "je bois du café mais j’ai oublié le sucre",
+                "les amis on met de la musique",
+                "il pleut aujord’hui j’ai pas de parapluie",
+                "mon tel est à 1% il s’éteint encore",
+                "salut les amis vous faites quoi si tard",
+                "oups j’ai cassé ma tasse à café je suis triste",
+                "le bus est encore en retard je suis énervé",
+                "les amis où est kyrosil",
+                "j’ai fait une omelette mais sans sel 😅",
+                "mon tel chauffe encore",
+                "salut j’ai laissé le caps lock allumé",
+                "ce chat est trop rempli j’adore",
+                "je bois du café mais j’ai encore sommeil",
+                "les amis conseillez un film svp",
+                "je suis crevé aujord’hui j’ai couru partout",
+                "mon tel charge plus encore",
+                "salut les amis il fait froid non",
+                "oups mon câble de charge est cassé",
+                "le chauffeur de bus a conduit trop vite j’ai peur",
+                "les amis kyrosil est là",
+                "pas de pain pour le petit-déj je suis triste",
+                "mon tel a encore buggé je suis énervé",
+                "salut les amis vous faites quoi si tard",
+                "oups ma machine à café marche pas",
+                "il fait beau aujord’hui on sort",
 
-      const messageElement = document.createElement('div');
-      messageElement.className = 'message';
-      messageElement.innerHTML = `<span class="username">${user}:</span> ${message}`;
-      chatBox.appendChild(messageElement);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+                // Yeni 50 Yunanca samimi, günlük, hatalı mesaj
+                "ουπς έχυσα τον καφέ μου πάνω μου",
+                "το τηλέφωνο μου ξανά πέθανε 😭",
+                "γεια παιδιά τι κάντε",
+                "σήμερα έχει πολλή ζέστη ιδρώνω",
+                "έφτιαξα αυγά αλλά τα έκαψα 🙈",
+                "κυροσίλ πώς είσαι φίλε",
+                "παιδιά έχασα το λεωφορείο τι να κάνω",
+                "που είναι ο φορτιστής μου δε βρίσκω",
+                "αυτό το chat πάει γρήγορα δε προλαβαίνω 😂",
+                "πίνω καφέ αλλά νυστάζω ακόμα",
+                "γεια έστειλα μήνυμα στη μαμά μου εδώ 😂",
+                "άργησα στη δουλειά το αφεντικό φώναξε",
+                "παιδιά προτείνετε σειρά παρακαλώ",
+                "παρήγγειλα φαγητό αλλά ήρθε λάθος 😠",
+                "το τηλέφωνο μου κόλλησε πάλι νευρίασα",
+                "η καφετιέρα χάλασε σήμερα το πρωί",
+                "γεια παιδιά ο καιρός είναι ωραίος ε",
+                "ουπς ξέχασα τον κωδικό μου πάλι",
+                "είμαι κουρασμένος σήμερα θέλω ύπνο",
+                "παιδιά που είναι ο κυροσίλ",
+                "έφαγα κουλούρι το πρωί πολύ καλό",
+                "το λεωφορείο ήταν γεμάτο ιδρώνω",
+                "έπεσε το τηλέφωνο μου ράγισε η οθόνη 😭",
+                "γεια συγνώμη έγραψα λάθος 😂",
+                "αυτό το chat είναι πολύ ωραίο το λατρεύω",
+                "πίνω καφέ αλλά ξέχασα τη ζάχαρη",
+                "παιδιά να βάλουμε μουσική",
+                "βρέχει σήμερα ξέχασα ομπρέλα",
+                "το τηλέφωνο μου είναι στο 1% πάλι πέθανε",
+                "γεια παιδιά τι κάνετε τόσο αργά",
+                "ουπς έσπασα την κούπα μου στεναχωρήθηκα",
+                "το λεωφορείο άργησε πάλι νευρίασα",
+                "παιδιά που είναι ο κυροσίλ",
+                "έφτιαξα ομελέτα αλλά χωρίς αλάτι 😅",
+                "το τηλέφωνο μου ζεστάθηκε πάλι",
+                "γεια έγραψα με κεφαλαία κατά λάθος",
+                "αυτό το chat είναι γεμάτο το λατρεύω",
+                "πίνω καφέ αλλά νυστάζω πάλι",
+                "παιδιά προτείνετε ταινία παρακαλώ",
+                "τρέχω όλη μέρα σήμερα κουράστηκα",
+                "το τηλέφωνο μου δε φορτίζει πάλι",
+                "γεια παιδιά κάνει κρύο ε",
+                "ουπς το καλώδιο φόρτισης έσπασε",
+                "ο οδηγός λεωφορείου έτρεχε πολύ φοβήθηκα",
+                "παιδιά είναι εδώ ο κυροσίλ",
+                "δεν είχα ψωμί για πρωινό στεναχωρήθηκα",
+                "το τηλέφωνο μου κόλλησε πάλι νευρίασα",
+                "γεια παιδιά τι κάνετε τόσο αργά",
+                "ουπς η καφετιέρα δε δουλεύει πάλι",
+                "ο καιρός είναι ωραίος σήμερα πάμε έξω"
+            ]
+        };
 
-    function addUserMessage(message) {
-      const chatBox = document.getElementById('chat-box');
-      const messageElement = document.createElement('div');
-      messageElement.className = 'message';
-      const userClass = currentUser.toLowerCase() === 'kyrosil' ? 'kyrosil' : 'username';
-      messageElement.innerHTML = `<span class="${userClass}">${currentUser}:</span> ${message}`;
-      chatBox.appendChild(messageElement);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+        // Kullanıcı adı ve moderasyon için değişkenler
+        let currentUser = null;
+        let bannedUsers = [];
+        let mutedUsers = {};
 
-    document.getElementById('username-submit').addEventListener('click', () => {
-      const input = document.getElementById('username-input').value.trim();
-      if (input) {
-        currentUser = input;
-        document.getElementById('username-container').style.display = 'none';
-        document.getElementById('chat-container').style.display = 'block';
+        // Online kullanıcı sayısı için sabit bir aralık
+        let onlineCount = 5000;
+        function updateOnlineCount() {
+            onlineCount += getRandomInt(-500, 500); // ±500 değişim
+            onlineCount = Math.max(5000, Math.min(50000, onlineCount)); // 5000-50000 aralığı
+            document.getElementById('online-count').textContent = `Online: ${onlineCount}`;
+        }
 
-        setInterval(addFakeMessage, Math.floor(Math.random() * 2000) + 1000);
-        updateOnlineCount();
-        setInterval(updateOnlineCount, 3000);
-      } else {
-        alert("Please enter a username.");
-      }
-    });
+        // Rastgele sayı üretme
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
-    document.getElementById('message-submit').addEventListener('click', () => {
-      const messageInput = document.getElementById('message-input');
-      const message = messageInput.value.trim();
-      if (message) {
-        addUserMessage(message);
-        messageInput.value = '';
-      }
-    });
+        // Rastgele kullanıcı ismi çekme (JSON'dan)
+        function getRandomUsername() {
+            return fakeChatData.nicknames[getRandomInt(0, fakeChatData.nicknames.length - 1)];
+        }
 
-    document.getElementById('message-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        document.getElementById('message-submit').click();
-      }
-    });
-  </script>
+        // Rastgele mesaj çekme (JSON'dan)
+        function getRandomMessage() {
+            return fakeChatData.messages[getRandomInt(0, fakeChatData.messages.length - 1)];
+        }
+
+        // Dil kontrol fonksiyonu
+        function detectLanguage(message) {
+            const turkishRegex = /[çğıöşü]/i;
+            const greekRegex = /[α-ω]/i;
+            const frenchRegex = /[éèêëàâäîïôöùûüç]/i;
+            const emojiRegex = /[\u{1F600}-\u{1F6FF}]/u;
+
+            // Emojileri temizle
+            const cleanMessage = message.replace(emojiRegex, '').trim();
+
+            let languages = [];
+            if (turkishRegex.test(cleanMessage)) languages.push('Turkish');
+            if (greekRegex.test(cleanMessage)) languages.push('Greek');
+            if (frenchRegex.test(cleanMessage)) languages.push('French');
+            if (cleanMessage.match(/^[a-zA-Z\s?!.,]+$/)) languages.push('English');
+
+            // Eğer birden fazla dil tespit edilirse veya hiç dil tespit edilmezse
+            return languages.length === 1 ? languages[0] : null;
+        }
+
+        // Yeni sahte mesaj ekleme (diyalog tarzı)
+        function addFakeMessage() {
+            if (!currentUser) return; // Kullanıcı adı seçilmeden mesaj eklenmesin
+            const chatBox = document.getElementById('chat-box');
+            const user = getRandomUsername();
+            const message = getRandomMessage();
+            const messageId = `msg-${Date.now()}-${Math.random()}`;
+
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.id = messageId;
+            messageElement.dataset.user = user;
+            const messageContent = document.createElement('span');
+            messageContent.innerHTML = `<span class="username">${user}:</span> ${message}`;
+            messageElement.appendChild(messageContent);
+
+            // Moderasyon butonları (sadece Kyrosil için)
+            if (currentUser.toLowerCase() === 'kyrosil') {
+                const modButtons = document.createElement('div');
+                modButtons.className = 'mod-buttons';
+                modButtons.innerHTML = `
+                    <button onclick="deleteMessage('${messageId}')">Sil</button>
+                    <button onclick="banUser('${user}')">Yasakla</button>
+                    <button onclick="muteUser('${user}')">Sessiz</button>
+                `;
+                messageElement.appendChild(modButtons);
+                messageElement.addEventListener('click', () => {
+                    modButtons.style.display = modButtons.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Kullanıcı mesajı ekleme
+        function addUserMessage(message) {
+            const language = detectLanguage(message);
+            if (!language) {
+                alert('Lütfen mesajınızı sadece tek bir dilde yazın (örn. sadece Türkçe veya sadece İngilizce)!');
+                return;
+            }
+
+            // Yasak veya sessiz kontrolü
+            if (bannedUsers.includes(currentUser)) {
+                alert('Bu sohbetten yasaklandınız!');
+                return;
+            }
+            if (mutedUsers[currentUser] && mutedUsers[currentUser] > Date.now()) {
+                const remainingTime = Math.ceil((mutedUsers[currentUser] - Date.now()) / 1000);
+                alert(`Sessize alındınız! Kalan süre: ${remainingTime} saniye`);
+                return;
+            }
+
+            const chatBox = document.getElementById('chat-box');
+            const messageId = `msg-${Date.now()}-${Math.random()}`;
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.id = messageId;
+            messageElement.dataset.user = currentUser;
+            const userClass = currentUser.toLowerCase() === 'kyrosil' ? 'kyrosil' : 'username';
+            const messageContent = document.createElement('span');
+            messageContent.innerHTML = `<span class="${userClass}">${currentUser}:</span> ${message}`;
+            messageElement.appendChild(messageContent);
+
+            // Moderasyon butonları (sadece Kyrosil için)
+            if (currentUser.toLowerCase() === 'kyrosil') {
+                const modButtons = document.createElement('div');
+                modButtons.className = 'mod-buttons';
+                modButtons.innerHTML = `
+                    <button onclick="deleteMessage('${messageId}')">Sil</button>
+                    <button onclick="banUser('${currentUser}')">Yasakla</button>
+                    <button onclick="muteUser('${currentUser}')">Sessiz</button>
+                `;
+                messageElement.appendChild(modButtons);
+                messageElement.addEventListener('click', () => {
+                    modButtons.style.display = modButtons.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Mesaj silme
+        function deleteMessage(messageId) {
+            const messageElement = document.getElementById(messageId);
+            if (messageElement) {
+                messageElement.remove();
+            }
+        }
+
+        // Kullanıcı yasaklama
+        function banUser(username) {
+            if (!bannedUsers.includes(username)) {
+                bannedUsers.push(username);
+                alert(`${username} sohbetten yasaklandı!`);
+                // Tüm kullanıcının mesajlarını sil
+                const messages = document.querySelectorAll(`.message[data-user="${username}"]`);
+                messages.forEach(msg => msg.remove());
+            }
+        }
+
+        // Kullanıcıyı sessize alma (5 dakika)
+        function muteUser(username) {
+            if (!mutedUsers[username]) {
+                mutedUsers[username] = Date.now() + 5 * 60 * 1000; // 5 dakika
+                alert(`${username} 5 dakikalığına sessize alındı!`);
+            }
+        }
+
+        // Kullanıcı adı seçme
+        document.getElementById('username-submit').addEventListener('click', () => {
+            const usernameInput = document.getElementById('username-input').value.trim();
+            if (usernameInput) {
+                currentUser = usernameInput;
+                document.getElementById('username-container').style.display = 'none';
+                document.getElementById('chat-container').style.display = 'block';
+                // Sahte mesajları başlat
+                setInterval(addFakeMessage, getRandomInt(300, 3000)); // 0.3-3 saniye
+                updateOnlineCount();
+                setInterval(updateOnlineCount, 3000); // Her 3 saniyede online sayısı güncelle
+            } else {
+                alert('Please enter a username!');
+            }
+        });
+
+        // Mesaj gönderme
+        document.getElementById('message-submit').addEventListener('click', () => {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                messageInput.value = '';
+            }
+        });
+
+        // Enter tuşu ile mesaj gönderme
+        document.getElementById('message-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('message-submit').click();
+            }
+        });
+    </script>
 </body>
 </html>
